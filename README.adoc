@@ -33,7 +33,7 @@ Calling Star Wars API:
 ----
 
 [[native-build]]
-== (Failing) Running as Native Image
+== Running as Native Image
 
  ./gradlew nativeCompile
  ./build/native/nativeCompile/rest-clients-native
@@ -61,4 +61,24 @@ Caused by: com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot
 ----
 
 To reproduce, build image and <<run,native-build>> or run tests in native `./gradlew nativeTest`.
+
+==== Fixes found
+
+IMPORTANT: Solutions work for binaries in Linux.
+For MacOs test the app via OCI image with `bootBuildImage`.
+
+1. Configure `@RegisterReflectionForBinding` with the required classes
++
+----
+@RegisterReflectionForBinding({PlanetsList.class, Planet.class}) in RestClientsNativeApplication
+public class RestClientsNativeApplication
+----
++
+This works for app, but not for tests.
+To run tests, they need to be run with `@SpringBootTest` which makes them start slower.
+
+2. Add `reflect-config.json` with metadata for required classes.
+The JSON contents can be obtained from the generated file(s) by Spring Boot native tools and placed in `/src/main/resources/META-INF/native-image/com.example/rest-clients-native/`.
++
+This works for both app and tests, but it's obviously more cumbersome and requires more maintenance effort.
 

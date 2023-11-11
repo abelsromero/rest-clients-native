@@ -3,11 +3,9 @@ package com.example.clients;
 import com.example.clients.sw.PlanetsList;
 import com.example.clients.sw.StarWarsRestClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StarWarsRestClientTest {
 
 

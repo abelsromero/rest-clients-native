@@ -1,0 +1,64 @@
+[
+	{
+		"name": "com.example.clients.sw.PlanetsList",
+		"allDeclaredConstructors": true,
+		"allDeclaredFields": true,
+		"methods": [
+			{
+				"name": "results",
+				"parameterTypes": []
+			},
+			{
+				"name": "count",
+				"parameterTypes": []
+			},
+			{
+				"name": "next",
+				"parameterTypes": []
+			},
+			{
+				"name": "previous",
+				"parameterTypes": []
+			}
+		]
+	},
+	{
+		"name": "com.example.clients.sw.Planet",
+		"allDeclaredConstructors": true,
+		"allDeclaredFields": true,
+		"methods": [
+			{
+				"name": "terrain",
+				"parameterTypes": []
+			},
+			{
+				"name": "rotation_period",
+				"parameterTypes": []
+			},
+			{
+				"name": "diameter",
+				"parameterTypes": []
+			},
+			{
+				"name": "name",
+				"parameterTypes": []
+			},
+			{
+				"name": "residents",
+				"parameterTypes": []
+			},
+			{
+				"name": "climate",
+				"parameterTypes": []
+			},
+			{
+				"name": "gravity",
+				"parameterTypes": []
+			},
+			{
+				"name": "orbital_period",
+				"parameterTypes": []
+			}
+		]
+	}
+]

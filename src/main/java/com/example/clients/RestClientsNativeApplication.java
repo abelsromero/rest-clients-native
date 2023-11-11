@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+//@RegisterReflectionForBinding({PlanetsList.class, Planet.class})
 public class RestClientsNativeApplication implements ApplicationRunner {
 
 	private final StarWarsRestClient restClient;
