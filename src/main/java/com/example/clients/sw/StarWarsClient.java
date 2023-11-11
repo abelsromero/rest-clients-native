@@ -6,14 +6,14 @@ import org.springframework.web.client.RestClient;
 
 
 @Component
-public class StarWarsRestClient {
+public class StarWarsClient {
 
 	private static final String url = "https://swapi.dev/api";
 
 	private final RestClient restClient;
 
 
-	public StarWarsRestClient() {
+	public StarWarsClient() {
 		restClient = RestClient.builder()
 			.baseUrl(url)
 			.build();
