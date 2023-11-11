@@ -1,0 +1,13 @@
+= Spring Boot v3.2 Rest Clients demo
+
+
+== Running as JAR
+
+ ./gradlew assemble
+ java -jar build/libs/rest-clients-native-0.0.1-SNAPSHOT.jar
+
+
+== Running as Native Image
+
+ ./gradlew nativeCompile
+ ./build/native/nativeCompile/rest-clients-native
