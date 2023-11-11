@@ -6,8 +6,59 @@
  ./gradlew assemble
  java -jar build/libs/rest-clients-native-0.0.1-SNAPSHOT.jar
 
+Expected output
 
-== Running as Native Image
+----
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::            (v3.2.0-RC2)
+
+. . .
+
+Calling Star Wars API:
+  Planet found: Tatooine
+  Planet found: Alderaan
+  Planet found: Yavin IV
+  Planet found: Hoth
+  Planet found: Dagobah
+  Planet found: Bespin
+  Planet found: Endor
+  Planet found: Naboo
+  Planet found: Coruscant
+  Planet found: Kamino
+----
+
+[[native-build]]
+== (Failing) Running as Native Image
 
  ./gradlew nativeCompile
  ./build/native/nativeCompile/rest-clients-native
+
+== Known issues
+
+=== Rest Clients not able to deserialize JSON response
+
+When calling the StarWars endpoint, the following error appears:
+
+----
+Caused by: com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `com.example.clients.sw.PlanetsList`: cannot deserialize from Object value (no delegate- or property-based Creator): this appears to be a native image, in which case you may need to configure reflection for the class that is to be deserialized
+ at [Source: (org.springframework.util.StreamUtils$NonClosingInputStream); line: 1, column: 2]
+        at com.fasterxml.jackson.databind.DeserializationContext.reportBadDefinition(DeserializationContext.java:1915) ~[rest-clients-native:2.15.3]
+        at com.fasterxml.jackson.databind.DatabindContext.reportBadDefinition(DatabindContext.java:414) ~[rest-clients-native:2.15.3]
+        at com.fasterxml.jackson.databind.DeserializationContext.handleMissingInstantiator(DeserializationContext.java:1355) ~[rest-clients-native:2.15.3]
+        at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.deserializeFromObjectUsingNonDefault(BeanDeserializerBase.java:1421) ~[rest-clients-native:2.15.3]
+        at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserializeFromObject(BeanDeserializer.java:352) ~[rest-clients-native:2.15.3]
+        at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:185) ~[rest-clients-native:2.15.3]
+        at com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:323) ~[rest-clients-native:2.15.3]
+        at com.fasterxml.jackson.databind.ObjectReader._bindAndClose(ObjectReader.java:2105) ~[rest-clients-native:2.15.3]
+        at com.fasterxml.jackson.databind.ObjectReader.readValue(ObjectReader.java:1481) ~[rest-clients-native:2.15.3]
+        at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.readJavaType(AbstractJackson2HttpMessageConverter.java:395) ~[rest-clients-native:6.1.0-RC2]
+        ... 21 common frames omitted
+----
+
+To reproduce, build image and <<run,native-build>> or run tests in native `./gradlew nativeTest`.
+
