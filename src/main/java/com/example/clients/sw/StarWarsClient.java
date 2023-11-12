@@ -26,4 +26,13 @@ public class StarWarsClient {
 		return planets;
 	}
 
+	public StarshipsList listStarships() {
+		final StarshipsList starships = restClient.get()
+			.uri("/starships")
+			.retrieve()
+			.body(StarshipsList.class);
+
+		return starships;
+	}
+
 }

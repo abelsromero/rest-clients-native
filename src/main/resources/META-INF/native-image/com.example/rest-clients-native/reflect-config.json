@@ -102,5 +102,67 @@
 				"parameterTypes": []
 			}
 		]
+	},
+	{
+		"name": "com.example.clients.sw.StarshipsList",
+		"allDeclaredConstructors": true,
+		"allDeclaredFields": true,
+		"methods": [
+			{
+				"name": "count",
+				"parameterTypes": []
+			},
+			{
+				"name": "results",
+				"parameterTypes": []
+			},
+			{
+				"name": "next",
+				"parameterTypes": []
+			},
+			{
+				"name": "previous",
+				"parameterTypes": []
+			}
+		]
+	},
+	{
+		"name": "com.example.clients.sw.Starship",
+		"allDeclaredConstructors": true,
+		"allDeclaredFields": true,
+		"methods": [
+			{
+				"name": "manufacturer",
+				"parameterTypes": []
+			},
+			{
+				"name": "length",
+				"parameterTypes": []
+			},
+			{
+				"name": "films",
+				"parameterTypes": []
+			},
+			{
+				"name": "passengers",
+				"parameterTypes": []
+			},
+			{
+				"name": "crew",
+				"parameterTypes": []
+			},
+			{
+				"name": "starship_class",
+				"parameterTypes": []
+			},
+			{
+				"name": "name",
+				"parameterTypes": []
+			}
+		]
+	},
+	{
+		"name": "java.util.HashSet",
+		"allDeclaredConstructors": true
 	}
 ]

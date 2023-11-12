@@ -27,6 +27,7 @@ public class RestClientsNativeApplication implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) {
 		getSwApi();
+		getSwApiWithSet();
 		postPostsApi();
 	}
 
@@ -41,13 +42,25 @@ public class RestClientsNativeApplication implements ApplicationRunner {
 
 	private void getSwApi() {
 		System.out.println("\n");
-		System.out.println("Calling Star Wars API:");
+		System.out.println("Calling Star Wars Planets API:");
 
 		swClient.listPlanets()
 			.results()
 			.stream()
 			.forEach(planet -> {
 				System.out.println("  Planet found: " + planet.name());
+			});
+	}
+
+	private void getSwApiWithSet() {
+		System.out.println("\n");
+		System.out.println("Calling Star Wars Starships API:");
+
+		swClient.listStarships()
+			.results()
+			.stream()
+			.forEach(planet -> {
+				System.out.println("  Starship found: " + planet.name());
 			});
 	}
 

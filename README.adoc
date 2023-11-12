@@ -40,7 +40,7 @@ Calling Star Wars API:
 
 == Known issues
 
-=== Rest Clients not able to deserialize JSON response
+=== Rest Client not able to deserialize JSON response
 
 When calling the StarWars endpoint, the following error appears:
 
@@ -79,13 +79,13 @@ This works for app, but not for tests.
 To run tests, they need to be run with `@SpringBootTest` which makes them start slower.
 
 2. Add `reflect-config.json` with metadata for required classes.
-The JSON contents can be obtained from the generated file (`./build/resources/aot/META-INF/native-image/com.example/rest-clients-native/reflect-config.json`) by Spring Boot native tools and placed in `/src/main/resources/META-INF/native-image/com.example/rest-clients-native/`.
+The JSON contents can be obtained from the generated file (run `./gradlew nativeCompile` and check `./build/resources/aot/META-INF/native-image/com.example/rest-clients-native/reflect-config.json`) by Spring Boot native tools and placed in `/src/main/resources/META-INF/native-image/com.example/rest-clients-native/`.
 
 +
 This works for both app and tests (Linux & MacOS), but it's obviously more cumbersome and requires more maintenance effort.
 
 
-=== Rest client not able to serialize JSON for requests
+=== Rest Client not able to serialize JSON for requests
 
 ----
 Failures (1):
@@ -113,4 +113,47 @@ For reference, this is the full annotated configuration.
 .Application class configuration
 ----
 @RegisterReflectionForBinding({PlanetsList.class, Planet.class, PostRequest.class, PostResponse.class})
+----
+
+
+=== Rest Client not able to deserialize JSON response with a Set property
+
+----
+Caused by: org.springframework.http.converter.HttpMessageConversionException: Type definition error: [collection type; class java.util.HashSet, contains [simple type, class java.lang.Object]]
+        at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.readJavaType(AbstractJackson2HttpMessageConverter.java:403) ~[rest-clients-native:6.1.0-RC2]
+        at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.read(AbstractJackson2HttpMessageConverter.java:354) ~[rest-clients-native:6.1.0-RC2]
+        at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.readWithMessageConverters(DefaultRestClient.java:616) ~[na:na]
+        at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.body(DefaultRestClient.java:544) ~[na:na]
+        at com.example.clients.sw.StarWarsClient.listStarships(StarWarsClient.java:33) ~[rest-clients-native:na]
+        at com.example.clients.RestClientsNativeApplication.getSwApiWithSet(RestClientsNativeApplication.java:65) ~[rest-clients-native:na]
+        at com.example.clients.RestClientsNativeApplication.run(RestClientsNativeApplication.java:36) ~[rest-clients-native:na]
+        at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:772) ~[rest-clients-native:3.2.0-RC2]
+        ... 15 common frames omitted
+Caused by: com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `java.util.HashSet` (no Creators, like default constructor, exist): no default no-arguments constructor found
+ at [Source: (org.springframework.util.StreamUtils$NonClosingInputStream); line: 1, column: 433] (through reference chain: com.example.clients.sw.StarshipsList["results"]->java.util.ArrayList[0]->com.example.clients.sw.Starship["films"])
+        at com.fasterxml.jackson.databind.DeserializationContext.reportBadDefinition(DeserializationContext.java:1915) ~[rest-clients-native:2.15.3]
+        at com.fasterxml.jackson.databind.DatabindContext.reportBadDefinition(DatabindContext.java:414) ~[rest-clients-native:2.15.3]
+----
+
+==== Fix
+
+In this case `@RegisterReflectionForBinding({HashSet.class})` did not work and the generated `reflect-config.json` was not correct.
+It generated the following:
+
+[,json]
+----
+{
+	"name": "java.util.HashSet"
+}
+----
+
+This is missing the constructor which are pointed by the error message.
+The fix consists of adding it manually.
+
+[,json]
+----
+{
+	"name": "java.util.HashSet",
+	"allDeclaredConstructors": true
+}
 ----
