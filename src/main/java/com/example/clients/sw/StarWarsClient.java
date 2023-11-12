@@ -8,14 +8,12 @@ import org.springframework.web.client.RestClient;
 @Component
 public class StarWarsClient {
 
-	private static final String url = "https://swapi.dev/api";
-
 	private final RestClient restClient;
 
 
 	public StarWarsClient() {
 		restClient = RestClient.builder()
-			.baseUrl(url)
+			.baseUrl("https://swapi.dev/api")
 			.build();
 	}
 

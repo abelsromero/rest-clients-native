@@ -3,17 +3,13 @@ package com.example.clients;
 import com.example.clients.posts.PostRequest;
 import com.example.clients.posts.PostResponse;
 import com.example.clients.posts.PostsClient;
-import com.example.clients.sw.Planet;
-import com.example.clients.sw.PlanetsList;
 import com.example.clients.sw.StarWarsClient;
-import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@RegisterReflectionForBinding({PlanetsList.class, Planet.class})
 public class RestClientsNativeApplication implements ApplicationRunner {
 
 	private final StarWarsClient swClient;

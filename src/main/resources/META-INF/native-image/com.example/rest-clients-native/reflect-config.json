@@ -60,5 +60,47 @@
 				"parameterTypes": []
 			}
 		]
+	},
+	{
+		"name": "com.example.clients.posts.PostRequest",
+		"allDeclaredConstructors": true,
+		"allDeclaredFields": true,
+		"methods": [
+			{
+				"name": "body",
+				"parameterTypes": []
+			},
+			{
+				"name": "userId",
+				"parameterTypes": []
+			},
+			{
+				"name": "title",
+				"parameterTypes": []
+			}
+		]
+	},
+	{
+		"name": "com.example.clients.posts.PostResponse",
+		"allDeclaredConstructors": true,
+		"allDeclaredFields": true,
+		"methods": [
+			{
+				"name": "title",
+				"parameterTypes": []
+			},
+			{
+				"name": "body",
+				"parameterTypes": []
+			},
+			{
+				"name": "userId",
+				"parameterTypes": []
+			},
+			{
+				"name": "id",
+				"parameterTypes": []
+			}
+		]
 	}
 ]

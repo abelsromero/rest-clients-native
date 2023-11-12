@@ -62,6 +62,7 @@ Caused by: com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot
 
 To reproduce, build image and <<run,native-build>> or run tests in native `./gradlew nativeTest`.
 
+[[json-fixes]]
 ==== Fixes found
 
 IMPORTANT: Solutions work for binaries in Linux.
@@ -78,7 +79,38 @@ This works for app, but not for tests.
 To run tests, they need to be run with `@SpringBootTest` which makes them start slower.
 
 2. Add `reflect-config.json` with metadata for required classes.
-The JSON contents can be obtained from the generated file(s) by Spring Boot native tools and placed in `/src/main/resources/META-INF/native-image/com.example/rest-clients-native/`.
-+
-This works for both app and tests, but it's obviously more cumbersome and requires more maintenance effort.
+The JSON contents can be obtained from the generated file (`./build/resources/aot/META-INF/native-image/com.example/rest-clients-native/reflect-config.json`) by Spring Boot native tools and placed in `/src/main/resources/META-INF/native-image/com.example/rest-clients-native/`.
 
++
+This works for both app and tests (Linux & MacOS), but it's obviously more cumbersome and requires more maintenance effort.
+
+
+=== Rest client not able to serialize JSON for requests
+
+----
+Failures (1):
+  JUnit Jupiter:PostsClientTest:shouldListPlanets()
+    MethodSource [className = 'com.example.clients.PostsClientTest', methodName = 'shouldListPlanets', methodParameterTypes = '']
+    => org.springframework.web.client.RestClientException: No HttpMessageConverter for com.example.clients.posts.PostRequest and content type "application/json"
+       org.springframework.web.client.DefaultRestClient$DefaultRequestBodyUriSpec.writeWithMessageConverters(DefaultRestClient.java:358)
+       org.springframework.web.client.DefaultRestClient$DefaultRequestBodyUriSpec.lambda$body$0(DefaultRestClient.java:317)
+       org.springframework.web.client.DefaultRestClient$DefaultRequestBodyUriSpec.exchangeInternal(DefaultRestClient.java:404)
+       org.springframework.web.client.DefaultRestClient$DefaultRequestBodyUriSpec.retrieve(DefaultRestClient.java:380)
+       com.example.clients.posts.PostsClient.create(PostsClient.java:22)
+       com.example.clients.PostsClientTest.shouldListPlanets(PostsClientTest.java:20)
+       java.base@21.0.1/java.lang.reflect.Method.invoke(Method.java:580)
+       java.base@21.0.1/java.util.ArrayList.forEach(ArrayList.java:1596)
+       java.base@21.0.1/java.util.ArrayList.forEach(ArrayList.java:1596)
+----
+
+==== Fix
+
+The message is different and miss-leading but the underlying issue can be fixed with the same solutions as <<json-fixes,above>>.
+
+For reference, this is the full annotated configuration.
+
+[,java]
+.Application class configuration
+----
+@RegisterReflectionForBinding({PlanetsList.class, Planet.class, PostRequest.class, PostResponse.class})
+----
